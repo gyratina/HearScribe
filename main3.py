@@ -2,24 +2,23 @@ import time
 import os
 import queue
 
-from Fst_Whisper import Fst_WhisperPipeline
+from Fst_WhisperPipeline import Fst_WhisperPipeline
 from GenaiPipeline3 import GenaiPipeline3
 
 
-def avvio_trascrizione(coda_rec=None, model_name=None, device=None, segmented_mode=False):
+def avvio_trascrizione(coda_rec=None, model_name=None, device=None, quantization=None, segmented_mode=False):
     print("Running HearScribe:")
-    whisper = WhisperPipeline(model_name=model_name, device=device)
+    fst_whisper = Fst_WhisperPipeline(model_name=model_name, device=device, quantization=quantization)
 
     def threads_trascrizione():
         coda_trascrizione = queue.Queue()
 
-        whisper.trascrizione(rec, segmented_mode, coda_trascrizione,)
+        fst_whisper.trascrizione(rec, segmented_mode, coda_trascrizione,)
 
-        trascrizione = (coda_trascrizione.get()).strip()
-
+        print((end_transcription_advice.get()).strip())
         time.sleep(0.75)
-        print("\nINIZIO RIELABORAZIONE.")
 
+        print("\nINIZIO RIELABORAZIONE.")
         # print("\n\rRielaborazione in corso...", end="", flush=True)
         print("Registrazione rielaborata:\n")
         print(select_chatbot(file_name=os.path.basename(rec)))
@@ -87,22 +86,6 @@ def raccolta_exist(cartella_raccolte=None):
         return False
 
 
-def mk_raccolta(): 
-    message = (
-        "IMPOSTAZIONI RACCOLTE:"
-        "Le raccolte servono ad organizzare in modo ordinato le tue lezioni, appunti ed elaborati.\n"
-        "Comandi:"
-        "new {nome_raccolta}   <-- Per creare una nuova raccolta."
-        "exit                  <-- Per uscire dalle impostazioni raccolte."
-        "-----------------------------------------------------------------------------------------"
-    )
-    print("")
-    while comando.startswith("exit"):
-        print(f"\r{message}", end="", flush=True)
-        comando = str(input("Inserisci "))
-
-
-
 
 def main():
     if raccolta_exist() is True:
@@ -115,13 +98,14 @@ def main():
 
 
     lista_rec = [
-        r"raccolte/Storia/Interrogazione Storia 30-05-2025.mp3"
+        r"raccolte/Storia/Storia10_Anni di Piombo e caduta Prima Repubblica.mp3"
     ]
 
     avvio_trascrizione(
         coda_rec=lista_rec,
         model_name = "large",
         device = "cuda",
+        quantization = "float16",
         segmented_mode = False
     )
 
