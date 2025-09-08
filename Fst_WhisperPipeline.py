@@ -58,7 +58,7 @@ class Fst_WhisperPipeline:
         self.model = WhisperModel(model_name, self.device, compute_type=self.quantization)
 
 
-    def trascrizione(self, audio_file, segment_mode, coda_trascrizione):
+    def trascrizione(self, audio_file, segment_mode, end_transcription_advice):
         if segment_mode is None:
             print("\n")
 
@@ -73,21 +73,20 @@ class Fst_WhisperPipeline:
                             # for segment in segments:
                             #     result += " ".join(segment.text)
 
-        coda_trascrizione.put(result)
 
         if segment_mode is False:
-            return self.text_result(result, file_name)
+            return self.text_result(result, file_name, end_transcription_advice)
         if segment_mode is True:
-            return self.segmented_result(segments, file_name)
+            return self.segmented_result(segments, file_name, end_transcription_advice)
 
 
-    def text_result(self, result, file_name):
+    def text_result(self, result, file_name, end_transcription_advice):
         print(f"\r{result.strip()}\n", end="", flush=True)
 
-        print(save_txt(result, file_name))
+        print(save_txt(result, file_name, end_transcription_advice))
 
 
-    def segmented_result(self, segments, file_name):
+    def segmented_result(self, segments, file_name, end_transcription_advice):
         for segment in segments:
             start_time = segment.start
             end_time = segment.end
@@ -100,7 +99,7 @@ class Fst_WhisperPipeline:
 
             print(f"\r[{start_min:02d}:{start_sec:02d}] -> [{end_min:02d}:{end_sec:02d}] {phrase}", flush=False)
 
-            print(save_txt(result, file_name))
+            print(save_txt(result, file_name, end_transcription_advice))
 
 
     # Funzione attualmente inutilizzata
@@ -126,7 +125,7 @@ class Fst_WhisperPipeline:
         print(f"{time_shown}")
 
 # Dopo l'implementazione del manager di raccolte far sì che l'utente possa decidere la posizione.
-def save_txt(text, file_name):
+def save_txt(text, file_name, end_transcription_advice):
     #cartella_locale = os.path.dirname(__file__)            # with open(f"{os.path.join(cartella_locale, file_name[:-4])}.txt", "w") as f:
     file_name, file_ext = os.path.splitext(file_name)
     with open(f"raccolte/Storia/Trascrizioni/{file_name}.txt", "w", encoding="utf-8") as f:

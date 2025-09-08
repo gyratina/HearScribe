@@ -11,9 +11,9 @@ def avvio_trascrizione(coda_rec=None, model_name=None, device=None, quantization
     fst_whisper = Fst_WhisperPipeline(model_name=model_name, device=device, quantization=quantization)
 
     def threads_trascrizione():
-        coda_trascrizione = queue.Queue()
+        end_transcription_advice = queue.Queue()
 
-        fst_whisper.trascrizione(rec, segmented_mode, coda_trascrizione,)
+        fst_whisper.trascrizione(rec, segmented_mode, end_transcription_advice,)
 
         print((end_transcription_advice.get()).strip())
         time.sleep(0.75)
@@ -103,10 +103,10 @@ def main():
 
     avvio_trascrizione(
         coda_rec=lista_rec,
-        model_name = "large",
+        model_name = "medium",
         device = "cuda",
         quantization = "float16",
-        segmented_mode = False
+        segmented_mode = True
     )
 
 if __name__ == "__main__":
