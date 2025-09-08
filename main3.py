@@ -106,7 +106,7 @@ def main():
         model_name = "medium",
         device = "cuda",
         quantization = "float16",
-        segmented_mode = True
+        segmented_mode = False
     )
 
 if __name__ == "__main__":
