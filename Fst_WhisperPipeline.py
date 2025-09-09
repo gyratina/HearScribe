@@ -10,29 +10,36 @@ from time import sleep
 class Fst_WhisperPipeline:
 
     def __init__(self, model_name=None, device=None, quantization=None):
-        self.device, self.quantization = (device, quantization or
-                                              ("cuda", None if torch.cuda.is_available()
-                                              else "cpu", "float32")
-                                          )
+        self.device = device or ("cuda" if torch.cuda.is_available()
+                                 else "cpu")
+        self.quantization = quantization or (None if torch.cuda.is_available()
+                                             else "float32")
 
-
-        print(f"Using device: {"GPU" if self.device == "cuda" else self.device.upper()}")
+        print(f"Using device: {"GPU" if self.device == "cuda" else (self.device).upper()}")
 
         if self.device == "cuda":
+            vram = torch.cuda.get_device_properties(0).total_memory / (1024 ** 3)
             if model_name is None:
-                vram = torch.cuda.get_device_properties(0).total_memory / (1024 ** 3)
                 if vram > 12:
                     model_name = "large-v2"
-                    quantization = "float16"
                 elif vram >= 10:
                     model_name = "medium"
-                    quantization = "float16"
                 elif vram >= 6:
                     model_name = "small"
-                    quantization = "int8"
                 else:
                     model_name = "base"
+
+            if quantization is None:
+                if vram > 12:
+                    quantization = "float16"
+                elif vram >= 10:
+                    quantization = "float16"
+                elif vram >= 6:
                     quantization = "int8"
+                else:
+                    quantization = "int8"
+
+            self.model = model_name
             self.quantization = quantization
             print(f"Using model: Faster Whisper | Model size: {model_name} | Compute type: {self.quantization}")
 
@@ -47,7 +54,7 @@ class Fst_WhisperPipeline:
                     model_name = "small"
                 else:
                     model_name = "tiny"
-            print(f"Using model: Faster Whisper | Model size: {model_name} | Compute type: {quantization}")
+            print(f"Using model: Faster Whisper | Model size: {model_name} | Compute type: {self.quantization}")
 
         #self.file_name = os.path.basename(file_name)
 
@@ -65,7 +72,7 @@ class Fst_WhisperPipeline:
         file_name = os.path.basename(audio_file)
         print(f"\rTranscribing: {file_name}")
 
-        segments, info = self.model.transcribe(audio_file, language="it") # verbose: se su False mostra caricamento, se su True mostra sul momento le rige trascriversi
+        segments, info = self.model.transcribe(audio_file, language="it")
 
         result = " ".join(segment.text for segment in segments)
         # ^Questo è come fare:
@@ -133,4 +140,4 @@ def save_txt(text, file_name, end_transcription_advice):
         f.close()
     sleep(0.50)
 
-    end_transcription_advice.put(text)
+    end_transcription_advice.put("\nTRASCRIZIONE TERMINATA E SALVATA.")

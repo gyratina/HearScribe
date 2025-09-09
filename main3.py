@@ -103,9 +103,11 @@ def main():
 
     avvio_trascrizione(
         coda_rec=lista_rec,
-        model_name = "medium",
-        device = "cuda",
-        quantization = "float16",
+
+        model_name = None,
+        device = None,
+        quantization = None,
+
         segmented_mode = False
     )
 
