@@ -33,11 +33,11 @@ class Fst_WhisperPipeline:
                 if vram > 12:
                     quantization = "float16"
                 elif vram >= 10:
-                    quantization = "float16"
+                    quantization = "int8"
                 elif vram >= 6:
                     quantization = "int8"
                 else:
-                    quantization = "int8"
+                    quantization = "float32"
 
             self.model = model_name
             self.quantization = quantization
