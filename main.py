@@ -3,7 +3,7 @@ import os
 import queue
 
 from Fst_WhisperPipeline import Fst_WhisperPipeline
-from GenaiPipeline3 import GenaiPipeline3
+from GenaiPipeline import GenaiPipeline
 
 
 def avvio_trascrizione(coda_rec=None, model_name=None, device=None, quantization=None, segmented_mode=False):
@@ -46,7 +46,7 @@ def avvio_trascrizione(coda_rec=None, model_name=None, device=None, quantization
 
 
 def select_chatbot(file_name=None, fusion_mode=False, coda_rec=None):
-    genai = GenaiPipeline3(
+    genai = GenaiPipeline(
         model=None,
         file_prompt=file_name,
         fusion_mode=fusion_mode,

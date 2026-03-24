@@ -5,7 +5,7 @@ from google.genai import types
 from dotenv import load_dotenv
 
 
-class GenaiPipeline3:
+class GenaiPipeline:
 
     def __init__(self, model=None, file_prompt=None, fusion_mode=False, coda_rec=None):
         load_dotenv()
