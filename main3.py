@@ -98,7 +98,7 @@ def main():
 
 
     lista_rec = [
-        r"raccolte/Storia/Storia10_Anni di Piombo e caduta Prima Repubblica.mp3"
+        r"raccolte/Architettura/Registrazioni/"
     ]
 
     avvio_trascrizione(

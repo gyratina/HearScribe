@@ -10,11 +10,11 @@ class GenaiPipeline3:
     def __init__(self, model=None, file_prompt=None, fusion_mode=False, coda_rec=None):
         load_dotenv()
         self.client = genai.Client(api_key = os.environ.get("GEMINI_API_KEY"))
-        self.model = "gemini-2.5-flash"
+        self.model = "gemini-3-flash-preview"
 
         if fusion_mode is False:
             file_prompt, file_ext, = os.path.splitext(file_prompt)
-            with open(f"raccolte/Storia/Trascrizioni/{file_prompt}.txt", "r", encoding="utf-8") as f:
+            with open(f"raccolte/Architettura/Trascrizioni/{file_prompt}.txt", "r", encoding="utf-8") as f:
                 prompt = f.read().strip()
                 self.final_prompt = (
                     f"Ciao, potresti cortesemente riorganizzare in modo ordinato e senza tralasciare il minimo dettaglio, questa interrogazione?"
@@ -27,7 +27,7 @@ class GenaiPipeline3:
             for rec_name in coda_rec:
                 rec_name = os.path.basename(rec_name)
                 rec_name, file_ext = os.path.splitext(rec_name)
-                with open(f"raccolte/Storia/Rielaborati/{rec_name}.md", "r", encoding="utf-8") as f:  # MODIFICARE IL "WITH OPEN" CON QUELLO REALMENTE FUNZIONANTE *(FARE LO STESSO PER SAVE_TXT E SAVE MS)*
+                with open(f"raccolte/Architettura/Rielaborati/{rec_name}.md", "r", encoding="utf-8") as f:  # MODIFICARE IL "WITH OPEN" CON QUELLO REALMENTE FUNZIONANTE *(FARE LO STESSO PER SAVE_TXT E SAVE MS)*
                     prompt += f"{f.read().strip()}\n\n"
 
             self.final_prompt = (
@@ -36,7 +36,7 @@ class GenaiPipeline3:
             )
 
             # FOR DEVS ONLY - Salva il prompt usato per l'elaborato complessivo.     # DEBUGGING
-            with open(f"raccolte/Storia/Elaborati complessivi/Prompt_complessivo.txt", "w", encoding="utf-8") as f:
+            with open(f"raccolte/Architettura/Elaborati complessivi/Prompt_complessivo.txt", "w", encoding="utf-8") as f:
                 f.write(prompt)
                 f.close()
 
@@ -85,7 +85,7 @@ class GenaiPipeline3:
 def save_md(text, file_name):
     # cartella_locale = os.path.dirname(__file__)           # with open(f"{os.path.join(cartella_locale, file_name[:-4])}.md", "w")as f:
     file_name, file_ext = os.path.splitext(file_name)
-    with open(f"raccolte/Storia/Rielaborati/{file_name}.md", "w", encoding="utf-8") as f:
+    with open(f"raccolte/Architettura/Rielaborati/{file_name}.md", "w", encoding="utf-8") as f:
         f.write(text)
         f.close()
     sleep(0.50)

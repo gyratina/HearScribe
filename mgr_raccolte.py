@@ -63,6 +63,7 @@ class mgr_raccolte:
                     nome_raccolta = comando[3:].strip()
                     nome_raccolta = nameFormatter(nome_raccolta)
                     os.mkdir(f"{base_dir}/{nome_raccolta}")
+                    os.mkdir(f"{base_dir}/{nome_raccolta}/Registrazioni")
                     os.mkdir(f"{base_dir}/{nome_raccolta}/Trascrizioni")
                     os.mkdir(f"{base_dir}/{nome_raccolta}/Rielaborati")
                     os.mkdir(f"{base_dir}/{nome_raccolta}/Elaborati complessivi")

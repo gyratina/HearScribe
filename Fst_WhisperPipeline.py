@@ -13,7 +13,7 @@ class Fst_WhisperPipeline:
         self.device = device or ("cuda" if torch.cuda.is_available()
                                  else "cpu")
         self.quantization = quantization or (None if torch.cuda.is_available()
-                                             else "float32")
+                                             else "int8")
 
         print(f"Using device: {"GPU" if self.device == "cuda" else (self.device).upper()}")
 
@@ -135,7 +135,7 @@ class Fst_WhisperPipeline:
 def save_txt(text, file_name, end_transcription_advice):
     #cartella_locale = os.path.dirname(__file__)            # with open(f"{os.path.join(cartella_locale, file_name[:-4])}.txt", "w") as f:
     file_name, file_ext = os.path.splitext(file_name)
-    with open(f"raccolte/Storia/Trascrizioni/{file_name}.txt", "w", encoding="utf-8") as f:
+    with open(f"raccolte/Architettura/Trascrizioni/{file_name}.txt", "w", encoding="utf-8") as f:
         f.write(text.strip())
         f.close()
     sleep(0.50)
